@@ -19,6 +19,7 @@ def main():
 			i += 2
 		elif text[i] == "=":
 			sum += int(tmp_str)
+			tmp_str = "0"
 			print(sum)
 			i += 1
 		elif summing == True:
