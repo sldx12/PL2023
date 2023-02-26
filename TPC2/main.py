@@ -16,6 +16,8 @@ def main():
 			i += 3
 		elif text[i:i+2].lower() == "on":
 			summing = True
+			sum += int(tmp_str)
+			tmp_str = "0"
 			i += 2
 		elif text[i] == "=":
 			sum += int(tmp_str)
