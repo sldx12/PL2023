@@ -23,7 +23,11 @@ def main():
 			print(sum)
 			i += 1
 		elif summing == True:
-			tmp_str += text[i]
+			if text[i].isdigit():
+				tmp_str += text[i]
+			else:
+				sum += int(tmp_str)
+				tmp_str = "0"
 			i += 1
 		elif summing == False:
 			i += 1
