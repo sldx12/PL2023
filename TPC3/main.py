@@ -1,5 +1,6 @@
 import pprint
 import json
+import re
 
 def main():
 	while True:
@@ -90,6 +91,18 @@ def main():
 					s = all_apelidos[a]['seculo']
 					print(f"apelido: {a}, frequência: {f}, século: {s}")
 				print("\n")
+
+			if o == 3:
+				r = {}
+				for linha in linhas:
+					relacao = re.findall(r'Tio Materno|Tio Paterno|Irmao[s]?|Primo Materno|Primo Paterno|Sobrinho Materno|Sobrinho Paterno|Filho|Pai|Avo Materno|Avo Paterno', linha)
+					for rel in relacao:
+						if rel in r:
+							r[rel] += 1
+						else:
+							r[rel] = 1
+
+				pprint.pprint(r)
 
 			if o == 4:
 				output = []
