@@ -28,8 +28,34 @@ def main():
 					print(f"{key}: {value}")
 
 			if o == 2:
-				freq_nome = {}
-				freq_apelido = {}
+				nomes = {}
+				apelidos = {}
+
+				for linha in linhas:
+					ano = int(linha.split('::')[1].split('-')[0])
+					if ano % 100 == 0:
+						seculo = ano // 100
+					else:
+						seculo = (ano // 100) + 1
+
+					nome = linha.split('::')[2].split(' ')[0]
+					apelido = linha.split('::')[2].split(' ')[-1]
+
+					if seculo not in nomes:
+						nomes[seculo] = {}
+						apelidos[seculo] = {}
+
+					if nome in nomes[seculo]:
+						nomes[seculo][nome] += 1
+					else:
+						nomes[seculo][nome] = 1
+
+					if apelido in apelidos[seculo]:
+						apelidos[seculo][apelido] += 1
+					else:
+						apelidos[seculo][apelido] = 1
+
+				pprint.pprint(nomes)
 	
 			if o == 4:
 				output = []
