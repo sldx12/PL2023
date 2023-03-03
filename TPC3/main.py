@@ -55,8 +55,25 @@ def main():
 					else:
 						apelidos[seculo][apelido] = 1
 
-				pprint.pprint(nomes)
-	
+				all_nomes = {}
+				for s, ns in nomes.items():
+					for n, f in ns.items():
+						if n not in all_nomes:
+							all_nomes[n] = {'frequencia': f, 'seculo': s}
+						else:
+							if f > all_nomes[n]['frequencia']:
+								all_nomes[n]['frequencia'] = f
+								all_nomes[n]['seculo'] = s
+
+				s_names = sorted(all_nomes.keys(), key=lambda x: all_nomes[x]['frequencia'], reverse=True)[:5]
+
+				print("\n")
+				for n in s_names:
+					f = all_nomes[n]['frequencia']
+					s = all_nomes[n]['seculo']
+					print(f"nome: {n}, frequência: {f}, século: {s}")
+				print("\n")
+
 			if o == 4:
 				output = []
 				vinte = linhas[0:20]
