@@ -1,4 +1,5 @@
 import pprint
+import json
 
 def main():
 	while True:
@@ -15,7 +16,6 @@ def main():
 
 				for linha in linhas:
 					ano = linha.split('::')[1].split('-')[0]
-					#print(linha.split('::')[1])
 					if ano in freq_ano:
 						freq_ano[ano] += 1
 					else:
@@ -30,6 +30,34 @@ def main():
 			if o == 2:
 				freq_nome = {}
 				freq_apelido = {}
+	
+			if o == 4:
+				output = []
+				vinte = linhas[0:20]
+
+				for item in vinte:
+					campos = item.strip().split('::')
+
+					op = {
+						'Pasta': campos[0],
+						'Data': campos[1],
+						'Nome': campos[2],
+						'Pai': campos[3],
+						'Mae': campos[4],
+						'Obs': campos[5],
+						'Obs2': campos[6]
+					}
+
+					output.append(op)
+
+				final = json.dumps(output, indent=2)
+				with open('processos.json', 'w') as j:
+					j.write(final)
+
+				print("\nFeito!\n")
+
+		else:
+			print("\nOpção inválida.\n")
 
 if __name__ == "__main__":
 	main()
