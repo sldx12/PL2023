@@ -72,6 +72,23 @@ def main():
 					f = all_nomes[n]['frequencia']
 					s = all_nomes[n]['seculo']
 					print(f"nome: {n}, frequência: {f}, século: {s}")
+
+				all_apelidos = {}
+				for s, aps in apelidos.items():
+					for a, f in aps.items():
+						if a not in all_apelidos:
+							all_apelidos[a] = {'frequencia': f, 'seculo': s}
+						else:
+							if f > all_apelidos[a]['frequencia']:
+								all_apelidos[a]['frequencia'] = f
+								all_apelidos[a]['seculo'] = s
+
+				s_apelidos = sorted(all_apelidos.keys(), key=lambda x: all_apelidos[x]['frequencia'], reverse=True)[:5]
+
+				for a in s_apelidos:
+					f = all_apelidos[a]['frequencia']
+					s = all_apelidos[a]['seculo']
+					print(f"apelido: {a}, frequência: {f}, século: {s}")
 				print("\n")
 
 			if o == 4:
