@@ -10,7 +10,11 @@ def main():
 		with open('processos.txt', 'r') as p:
 			linhas = p.readlines()
 			linhas.pop()
-	
+
+		for i in linhas[:]:
+			if len(i) < 2:
+				linhas.remove(i)
+
 		if o in [1,2,3,4]:
 			if o == 1:
 				freq_ano = {}
