@@ -29,10 +29,11 @@ def main():
 			
 			y = json.dumps(final)
 
-			with open('output.json', 'w') as j:
+			o_filename = filename.split(".")[0] + ".json"
+			with open(o_filename, 'w') as j:
 				j.write(y)
 
-		else:
+		elif re.search(r'\{(\d+)\}', cabeca) != None:
 			colunas = cabeca.split(",")
 			colunas = colunas[:-1]
 
@@ -43,7 +44,6 @@ def main():
 				cols = linha.split(",")
 				cols[-1] = cols[-1].rstrip("\n")
 				ii = 0
-				print(colunas)
 				cc = 0
 				while cc < len(colunas):
 					if "{" not in colunas[cc]:
@@ -51,7 +51,6 @@ def main():
 						ii += 1
 						cc += 1
 					else:
-						print(cols[ii])
 						num = re.search(r"\{(.+?)\}", colunas[cc])
 						num = int(num.group(1))
 						content = re.search(r"(.+?)\{", colunas[cc])
@@ -67,7 +66,74 @@ def main():
 
 			y = json.dumps(final)
 
-			with open('output.json', 'w') as j:
+			o_filename = filename.split(".")[0] + ".json"
+			with open(o_filename, 'w') as j:
+				j.write(y)
+
+		elif re.search(r'\{(\d+(,\d+)*)\}', cabeca) != None:
+			colunas = []
+			temp = ""
+			skip_next = False
+
+			for i, c in enumerate(cabeca):
+				if skip_next:
+					temp += c
+					if c == '}':
+						skip_next = False
+					continue
+				elif c == '{':
+					skip_next = True
+					temp += c
+				elif c == ',':
+					if skip_next:
+						temp += c
+					else:
+						colunas.append(temp)
+						temp = ""
+
+				else:
+					temp += c
+			colunas.append(temp)
+			colunas.pop()
+			colunas.pop()
+
+			final = []
+
+			for linha in linhas:
+				tmp = {}
+				cols = linha.split(",")
+				ii = 0
+				cc = 0
+				while cc < len(colunas) - 1:
+					if "{" not in colunas[cc]:
+						tmp[colunas[cc]] = cols[ii]
+						ii += 1
+						cc += 1
+					else:
+						match = re.search(r'(\d+),(\d+)', colunas[cc])
+						num_min = int(match.group(1))
+						num_max = int(match.group(2))
+						content = re.search(r"(.+?)\{", colunas[cc])
+						content = content.group(1)
+
+						tmp[content] = []
+						for x in range(0, num_max):
+							if x < num_min:
+								tmp[content].append(cols[ii])
+								ii += 1
+								cc += 1
+							else:
+								if len(cols[ii]) != 0:
+									tmp[content].append(cols[ii])
+									ii += 1
+									cc += 1
+
+				final.append(tmp)
+
+			y = json.dumps(final)
+			
+			o_filename = filename.split(".")[0] + ".json"
+			with open(o_filename, 'w') as j:
 				j.write(y)
 
 if __name__ == "__main__":
