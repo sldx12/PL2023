@@ -1,5 +1,6 @@
 import json
 import re
+from statistics import mean
 
 def main():
 	while True:
@@ -198,7 +199,10 @@ def main():
 									cc += 1
 
 						n = content + "_" + content2
-						tmp[n] = sum(tmp2)
+						if content2 == "sum":
+							tmp[n] = sum(tmp2)
+						elif content2 == "media":
+							tmp[n] = mean(tmp2)
 
 				final.append(tmp)
 
